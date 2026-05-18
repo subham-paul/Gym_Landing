@@ -1,0 +1,2588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Muscle Forge — Forge Your Future</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" />
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        :root {
+            --blue: #0d6efd;
+            --blue-dark: #0a3d91;
+            --blue-mid: #1565c0;
+            --orange: #ff6a00;
+            --orange-lit: #ff9500;
+            --grad: linear-gradient(135deg, #0d6efd 0%, #ff6a00 100%);
+            --grad-rev: linear-gradient(135deg, #ff6a00 0%, #0d6efd 100%);
+            --glass-bg: rgba(10, 25, 60, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-light: #e8f0fe;
+            --text-dim: #9ab0d8;
+            --card-bg: rgba(13, 30, 70, 0.65);
+            --dark-bg: #050d1f;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Exo 2', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ===== PARTICLE CANVAS ===== */
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050d1f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--grad);
+            border-radius: 4px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: rgba(5, 13, 31, 0.85) !important;
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all .3s;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .nav-link {
+            color: var(--text-dim) !important;
+            font-weight: 600;
+            font-size: .85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color .2s;
+        }
+
+        .nav-link:hover {
+            color: var(--orange-lit) !important;
+        }
+
+        .btn-nav-cta {
+            background: var(--grad);
+            color: #fff !important;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 22px;
+            font-weight: 700;
+            font-size: .82rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-nav-cta:hover {
+            opacity: .85;
+        }
+
+        /* ===== AD BANNER ===== */
+        .ad-banner {
+            background: linear-gradient(90deg, #0d2060 0%, #0a3d91 30%, #ff6a00 70%, #c94b00 100%);
+            padding: 10px 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 999;
+            border-bottom: 2px solid rgba(255, 106, 0, .5);
+        }
+
+        .ad-track {
+            display: flex;
+            gap: 0;
+            animation: adScroll 28s linear infinite;
+            white-space: nowrap;
+            width: max-content;
+        }
+
+        .ad-track:hover {
+            animation-play-state: paused;
+        }
+
+        .ad-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 40px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: .5px;
+        }
+
+        .ad-item .badge-hot {
+            background: #ff0000;
+            color: #fff;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: .72rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            animation: pulse 1s infinite;
+        }
+
+        .ad-item .badge-new {
+            background: #00c853;
+            color: #fff;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: .72rem;
+            font-weight: 900;
+        }
+
+        .ad-sep {
+            color: rgba(255, 255, 255, .4);
+            padding: 0 10px;
+        }
+
+        @keyframes adScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ===== HERO ===== */
+        #hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(160deg, #050d1f 0%, #0a1a45 50%, #1a0a05 100%);
+        }
+
+        .hero-bg-lines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(90deg, rgba(13, 110, 253, .05) 0 1px, transparent 1px 80px),
+                repeating-linear-gradient(0deg, rgba(255, 106, 0, .04) 0 1px, transparent 1px 80px);
+            z-index: 1;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 1;
+        }
+
+        .glow-blue {
+            background: rgba(13, 110, 253, .25);
+            top: -200px;
+            left: -200px;
+        }
+
+        .glow-orange {
+            background: rgba(255, 106, 0, .2);
+            bottom: -200px;
+            right: -100px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(255, 106, 0, .15);
+            border: 1px solid rgba(255, 106, 0, .4);
+            color: var(--orange-lit);
+            border-radius: 30px;
+            padding: 6px 20px;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 9vw, 8rem);
+            line-height: .95;
+            letter-spacing: 4px;
+        }
+
+        .hero-title .grad-text {
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            max-width: 500px;
+            line-height: 1.8;
+            margin: 22px 0 36px;
+        }
+
+        .btn-primary-grad {
+            background: var(--grad);
+            border: none;
+            border-radius: 50px;
+            padding: 14px 40px;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 1px;
+            transition: transform .2s, box-shadow .2s;
+            box-shadow: 0 8px 30px rgba(255, 106, 0, .3);
+        }
+
+        .btn-primary-grad:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(255, 106, 0, .45);
+            color: #fff;
+        }
+
+        .btn-outline-glass {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, .2);
+            border-radius: 50px;
+            padding: 12px 36px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 1px;
+            backdrop-filter: blur(6px);
+            transition: all .2s;
+        }
+
+        .btn-outline-glass:hover {
+            border-color: var(--orange);
+            color: var(--orange-lit);
+        }
+
+        .hero-img-wrap {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-img-wrap img {
+            width: 100%;
+            max-width: 560px;
+            border-radius: 24px;
+            box-shadow: 0 0 80px rgba(13, 110, 253, .3), 0 0 40px rgba(255, 106, 0, .15);
+            display: block;
+            margin: auto;
+        }
+
+        .hero-badge {
+            position: absolute;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 12px 18px;
+            font-size: .85rem;
+            font-weight: 700;
+        }
+
+        .hero-badge.b1 {
+            top: 30px;
+            left: -30px;
+        }
+
+        .hero-badge.b2 {
+            bottom: 50px;
+            right: -20px;
+        }
+
+        .badge-icon {
+            font-size: 1.5rem;
+        }
+
+        .hero-scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-dim);
+            font-size: .75rem;
+            letter-spacing: 2px;
+        }
+
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--orange);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(8px)
+            }
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-pad {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            letter-spacing: 3px;
+            line-height: 1;
+        }
+
+        .grad-line {
+            display: inline-block;
+            width: 60px;
+            height: 4px;
+            background: var(--grad);
+            border-radius: 4px;
+            margin: 12px 0 20px;
+        }
+
+        .section-sub {
+            color: var(--text-dim);
+            font-size: 1.05rem;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* ===== GLASS CARD ===== */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(13, 110, 253, .2);
+            border-color: rgba(255, 106, 0, .3);
+        }
+
+        /* ===== STATS ===== */
+        #stats {
+            background: linear-gradient(135deg, rgba(13, 110, 253, .08) 0%, rgba(255, 106, 0, .08) 100%);
+        }
+
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: .9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        /* ===== ABOUT ===== */
+        .about-img {
+            border-radius: 24px;
+            width: 100%;
+            object-fit: cover;
+            box-shadow: 0 0 60px rgba(13, 110, 253, .25);
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .about-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 106, 0, .12);
+            border: 1px solid rgba(255, 106, 0, .3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--orange-lit);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== PROGRAMS ===== */
+        .prog-card {
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .prog-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 14px;
+            transition: transform .4s;
+        }
+
+        .prog-card:hover .prog-img {
+            transform: scale(1.06);
+        }
+
+        .prog-tag {
+            display: inline-block;
+            background: var(--grad);
+            color: #fff;
+            border-radius: 30px;
+            padding: 3px 14px;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .prog-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        /* ===== BMI ===== */
+        #bmi {
+            background: linear-gradient(135deg, rgba(10, 61, 145, .12) 0%, rgba(255, 106, 0, .08) 100%);
+        }
+
+        .bmi-result-bar {
+            height: 16px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #0d6efd, #00e676, #ffeb3b, #ff6a00, #d32f2f);
+            position: relative;
+            overflow: visible;
+            margin: 20px 0 10px;
+        }
+
+        .bmi-pointer {
+            position: absolute;
+            top: -8px;
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border-radius: 50%;
+            border: 3px solid var(--orange);
+            transition: left .6s cubic-bezier(.34, 1.56, .64, 1);
+            transform: translateX(-50%);
+            box-shadow: 0 4px 20px rgba(255, 106, 0, .5);
+        }
+
+        .bmi-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .bmi-category {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, .1);
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--grad);
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        /* ===== PRICING ===== */
+        .pricing-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            border-color: rgba(255, 106, 0, .5);
+            box-shadow: 0 0 60px rgba(255, 106, 0, .15);
+        }
+
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 18px;
+            right: -28px;
+            background: var(--grad);
+            color: #fff;
+            font-size: .65rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            padding: 4px 40px;
+            transform: rotate(45deg);
+        }
+
+        .price-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-old {
+            text-decoration: line-through;
+            color: var(--text-dim);
+            font-size: .95rem;
+        }
+
+        .pricing-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: var(--text-dim);
+            font-size: .92rem;
+        }
+
+        .pricing-feature i {
+            color: var(--orange-lit);
+        }
+
+        .countdown-wrap {
+            background: rgba(255, 106, 0, .08);
+            border: 1px solid rgba(255, 106, 0, .25);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: var(--orange-lit);
+            line-height: 1;
+        }
+
+        .countdown-lab {
+            font-size: .68rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== TRAINERS ===== */
+        .trainer-card .trainer-img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 18px 18px 0 0;
+        }
+
+        .trainer-card .card-body {
+            background: var(--card-bg);
+            border-radius: 0 0 18px 18px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            border-top: none;
+        }
+
+        .trainer-social a {
+            color: var(--text-dim);
+            margin-right: 12px;
+            transition: color .2s;
+        }
+
+        .trainer-social a:hover {
+            color: var(--orange-lit);
+        }
+
+        .trainer-spec {
+            display: inline-block;
+            background: rgba(13, 110, 253, .15);
+            border: 1px solid rgba(13, 110, 253, .3);
+            border-radius: 20px;
+            padding: 3px 12px;
+            font-size: .72rem;
+            font-weight: 700;
+            color: #7eb5ff;
+            margin: 2px;
+        }
+
+        /* ===== DIET ===== */
+        .diet-day {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--orange-lit);
+            margin-bottom: 14px;
+        }
+
+        .meal-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .meal-time {
+            font-size: .78rem;
+            color: var(--text-dim);
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .meal-name {
+            font-weight: 600;
+            font-size: .9rem;
+            flex: 1;
+        }
+
+        .meal-cal {
+            font-size: .8rem;
+            color: var(--orange-lit);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* ===== GALLERY ===== */
+        .gallery-grid {
+            columns: 3;
+            gap: 14px;
+        }
+
+        .gallery-grid .gal-item {
+            break-inside: avoid;
+            margin-bottom: 14px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .gallery-grid .gal-item img {
+            width: 100%;
+            display: block;
+            transition: transform .4s;
+        }
+
+        .gallery-grid .gal-item:hover img {
+            transform: scale(1.07);
+        }
+
+        .gal-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(5, 13, 31, .8) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity .3s;
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-end;
+            padding: 16px;
+        }
+
+        .gal-item:hover .gal-overlay {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid {
+                columns: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                columns: 1;
+            }
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testi-card {
+            position: relative;
+        }
+
+        .testi-quote {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 5rem;
+            line-height: .6;
+            color: rgba(255, 106, 0, .2);
+            position: absolute;
+            top: 20px;
+            left: 24px;
+        }
+
+        .testi-text {
+            font-size: 1rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            padding-top: 30px;
+        }
+
+        .testi-stars {
+            color: #ffc107;
+            font-size: .9rem;
+            margin: 10px 0;
+        }
+
+        .testi-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--orange);
+        }
+
+        .testi-name {
+            font-weight: 700;
+            font-size: .95rem;
+        }
+
+        .testi-role {
+            font-size: .78rem;
+            color: var(--text-dim);
+        }
+
+        /* ===== SCHEDULE ===== */
+        .schedule-tab {
+            border: none;
+            background: none;
+        }
+
+        .nav-pills .nav-link {
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, .1);
+            border-radius: 30px;
+            padding: 8px 22px;
+            font-size: .85rem;
+            font-weight: 700;
+            margin: 4px;
+        }
+
+        .nav-pills .nav-link.active {
+            background: var(--grad);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .sched-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 120px 120px;
+            gap: 16px;
+            align-items: center;
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, .03);
+            border: 1px solid rgba(255, 255, 255, .06);
+            margin-bottom: 10px;
+            transition: background .2s;
+        }
+
+        .sched-row:hover {
+            background: rgba(13, 110, 253, .08);
+        }
+
+        .sched-time {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--orange-lit);
+        }
+
+        .sched-name {
+            font-weight: 700;
+        }
+
+        .sched-trainer {
+            font-size: .85rem;
+            color: var(--text-dim);
+        }
+
+        .sched-slots {
+            font-size: .82rem;
+        }
+
+        .slot-full {
+            color: #ef5350;
+        }
+
+        .slot-open {
+            color: #66bb6a;
+        }
+
+        @media (max-width: 600px) {
+            .sched-row {
+                grid-template-columns: 80px 1fr;
+            }
+
+            .sched-trainer,
+            .sched-slots {
+                display: none;
+            }
+        }
+
+        /* ===== FAQ ===== */
+        .faq-item {
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            background: var(--card-bg);
+            padding: 18px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: .98rem;
+            transition: background .2s;
+        }
+
+        .faq-q:hover {
+            background: rgba(13, 110, 253, .12);
+        }
+
+        .faq-q .faq-icon {
+            color: var(--orange-lit);
+            transition: transform .3s;
+        }
+
+        .faq-q.open .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-a {
+            background: rgba(5, 13, 31, .5);
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease, padding .3s;
+            color: var(--text-dim);
+            font-size: .95rem;
+            line-height: 1.8;
+        }
+
+        .faq-a.open {
+            max-height: 300px;
+            padding: 16px 24px;
+        }
+
+        /* ===== CONTACT ===== */
+        #contact {
+            background: linear-gradient(135deg, rgba(10, 61, 145, .1) 0%, rgba(255, 106, 0, .07) 100%);
+        }
+
+        .form-control,
+        .form-select {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: #fff;
+            border-radius: 12px;
+            padding: 13px 18px;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            background: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 106, 0, .5);
+            color: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 106, 0, .1);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, .3);
+        }
+
+        .contact-info-item {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .ci-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 106, 0, .12);
+            border: 1px solid rgba(255, 106, 0, .3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--orange-lit);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(180deg, #030a1a 0%, #000 100%);
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            padding: 70px 0 30px;
+        }
+
+        .footer-brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.4rem;
+            background: var(--grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            font-size: .9rem;
+            transition: color .2s;
+        }
+
+        .footer-link:hover {
+            color: var(--orange-lit);
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .12);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            margin-right: 8px;
+            transition: all .2s;
+        }
+
+        .footer-social a:hover {
+            background: var(--grad);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            padding-top: 24px;
+            margin-top: 50px;
+            color: var(--text-dim);
+            font-size: .85rem;
+        }
+
+        /* ===== PULSE ===== */
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .6
+            }
+        }
+
+        /* ===== FLOATING CTA ===== */
+        .floating-cta {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: var(--grad);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 28px;
+            font-weight: 800;
+            font-size: .9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 30px rgba(255, 106, 0, .4);
+            cursor: pointer;
+            animation: floatBob 3s ease-in-out infinite;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .floating-cta:hover {
+            transform: scale(1.06);
+            box-shadow: 0 14px 40px rgba(255, 106, 0, .55);
+        }
+
+        @keyframes floatBob {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-6px)
+            }
+        }
+
+        /* ===== SALE TIMER BADGE ===== */
+        .sale-ribbon {
+            position: fixed;
+            top: 80px;
+            right: -2px;
+            z-index: 998;
+            background: var(--grad);
+            color: #fff;
+            padding: 10px 16px 10px 20px;
+            border-radius: 12px 0 0 12px;
+            font-size: .75rem;
+            font-weight: 800;
+            letter-spacing: .5px;
+            box-shadow: -4px 4px 20px rgba(255, 106, 0, .3);
+            cursor: pointer;
+        }
+
+        .sale-ribbon .sr-timer {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* ===== INFINITE PERSON CAROUSEL ===== */
+        .people-strip {
+            overflow: hidden;
+            padding: 50px 0;
+            background: rgba(13, 110, 253, .04);
+            border-top: 1px solid rgba(255, 255, 255, .05);
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+        }
+
+        .people-track {
+            display: flex;
+            gap: 20px;
+            animation: pScroll 30s linear infinite;
+            width: max-content;
+        }
+
+        .people-track:hover {
+            animation-play-state: paused;
+        }
+
+        .person-card {
+            flex-shrink: 0;
+            width: 180px;
+        }
+
+        .person-card img {
+            width: 180px;
+            height: 240px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, .08);
+        }
+
+        .person-label {
+            text-align: center;
+            margin-top: 8px;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        @keyframes pScroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ===== MISC ===== */
+        .divider-grad {
+            height: 2px;
+            background: var(--grad);
+            border: none;
+            opacity: .3;
+            margin: 0;
+        }
+
+        .badge-limited {
+            background: linear-gradient(90deg, #ff0000, #ff6a00);
+            color: #fff;
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: .75rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            animation: pulse 1.2s infinite;
+        }
+
+        .offer-box {
+            background: rgba(255, 0, 0, .07);
+            border: 1px solid rgba(255, 0, 0, .25);
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+
+        .progress-wrap {
+            margin-bottom: 6px;
+        }
+
+        .progress {
+            background: rgba(255, 255, 255, .08);
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            background: var(--grad);
+            border-radius: 4px;
+        }
+
+        .seats-left {
+            font-size: .8rem;
+            color: var(--orange-lit);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ===== PARTICLE CANVAS ===== -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- ===== SALE RIBBON ===== -->
+    <div class="sale-ribbon" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">
+        <div>🔥 MEGA SALE ENDS IN</div>
+        <div class="sr-timer" id="sr-timer">02D : 14H : 36M</div>
+    </div>
+
+    <!-- ===== AD BANNER ===== -->
+    <div class="ad-banner">
+        <div class="ad-track" id="ad-track">
+            <!-- duplicated for seamless loop -->
+            <span class="ad-item"><span class="badge-hot">HOT</span> Founding Member Deal — 60% OFF Annual Plan <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">🔥 Only <strong>11 Spots Left</strong> — Sale Ends in <strong>2 Days!</strong> <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item"><span class="badge-new">NEW</span> HIIT &amp; CrossFit Batch Starting June 1st <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">💪 Free Personal Training Session with <strong>3-Month Plan</strong> <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">🥗 Free Diet Consultation Worth ₹999 — Limited Time! <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item"><span class="badge-hot">FLASH</span> Weekend Special — Join Today, 1st Month FREE
+                <span class="ad-sep">|</span></span>
+            <span class="ad-item">🏆 India's Top-Rated Gym 2024 — Join 5,000+ Members <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">⚡ Women's Zumba &amp; Yoga Batch — Enroll Now! <span class="ad-sep">|</span></span>
+            <!-- duplicate -->
+            <span class="ad-item"><span class="badge-hot">HOT</span> Founding Member Deal — 60% OFF Annual Plan <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">🔥 Only <strong>11 Spots Left</strong> — Sale Ends in <strong>2 Days!</strong> <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item"><span class="badge-new">NEW</span> HIIT &amp; CrossFit Batch Starting June 1st <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">💪 Free Personal Training Session with <strong>3-Month Plan</strong> <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">🥗 Free Diet Consultation Worth ₹999 — Limited Time! <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item"><span class="badge-hot">FLASH</span> Weekend Special — Join Today, 1st Month FREE
+                <span class="ad-sep">|</span></span>
+            <span class="ad-item">🏆 India's Top-Rated Gym 2024 — Join 5,000+ Members <span
+                    class="ad-sep">|</span></span>
+            <span class="ad-item">⚡ Women's Zumba &amp; Yoga Batch — Enroll Now! <span class="ad-sep">|</span></span>
+        </div>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg sticky-top py-2">
+        <div class="container">
+            <a class="navbar-brand" href="#">⚡ MUSCLE FORGE</a>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#trainers">Trainers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item ms-lg-2"><a class="nav-link btn-nav-cta" href="#pricing">Join Now 🔥</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+        <div class="hero-bg-lines"></div>
+        <div class="hero-glow glow-blue"></div>
+        <div class="hero-glow glow-orange"></div>
+        <div class="container py-5">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-duration="900">
+                    <div class="hero-tag">🔥 India's Premier Fitness Destination</div>
+                    <h1 class="hero-title">
+                        FORGE<br>
+                        <span class="grad-text">YOUR</span><br>
+                        LEGACY
+                    </h1>
+                    <p class="hero-sub">Transform your body, mind, and spirit at Muscle Forge — where world-class
+                        trainers, cutting-edge equipment, and a fire-lit community push you beyond every limit.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#pricing" class="btn btn-primary-grad">Start Free Trial</a>
+                        <a href="#programs" class="btn btn-outline-glass">Explore Programs</a>
+                    </div>
+                    <div class="d-flex flex-wrap gap-4 mt-4">
+                        <div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:1.8rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                                5,000+</div>
+                            <div
+                                style="font-size:.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">
+                                Active Members</div>
+                        </div>
+                        <div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:1.8rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                                18+</div>
+                            <div
+                                style="font-size:.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">
+                                Expert Trainers</div>
+                        </div>
+                        <div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:1.8rem;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                                12</div>
+                            <div
+                                style="font-size:.8rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px">
+                                Programs</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left" data-aos-duration="900" data-aos-delay="100">
+                    <div class="hero-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80"
+                            alt="Gym Hero" />
+                        <div class="hero-badge b1">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge-icon">🏅</span>
+                                <div>
+                                    <div style="font-weight:800;font-size:.9rem">Award Winning</div>
+                                    <div style="font-size:.72rem;color:var(--text-dim)">Best Gym 2024</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-badge b2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge-icon">💥</span>
+                                <div>
+                                    <div style="font-weight:800;font-size:.9rem">Sale Ends Soon</div>
+                                    <div style="font-size:.72rem;color:var(--orange-lit)">60% OFF — 2 Days Left!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-hint">
+            <div class="scroll-dot"></div>
+            <span>SCROLL</span>
+        </div>
+    </section>
+
+    <!-- ===== PEOPLE STRIP ===== -->
+    <div class="people-strip">
+        <div class="people-track" id="pTrack">
+            <!-- 10 unique + 10 duplicate for seamless loop -->
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Rahul S. — Lost 22kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Priya K. — 6-Month Journey</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Arjun M. — Body Builder</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Sneha R. — Zumba Expert</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Vikram T. — CrossFit Pro</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1597452485677-d661670d9640?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Ananya D. — Yoga Coach</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Karan P. — Powerlifter</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Divya N. — Lost 18kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Rohan B. — Gained 12kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Meena V. — Marathon Runner</div>
+            </div>
+            <!-- duplicates -->
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Rahul S. — Lost 22kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Priya K. — 6-Month Journey</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Arjun M. — Body Builder</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Sneha R. — Zumba Expert</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Vikram T. — CrossFit Pro</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1597452485677-d661670d9640?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Ananya D. — Yoga Coach</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Karan P. — Powerlifter</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Divya N. — Lost 18kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Rohan B. — Gained 12kg</div>
+            </div>
+            <div class="person-card"><img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=300&q=80"
+                    alt="" />
+                <div class="person-label">Meena V. — Marathon Runner</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <section id="stats" class="section-pad">
+        <div class="container">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="0">
+                    <div class="glass-card">
+                        <div class="stat-num" data-count="5000">0</div>
+                        <div class="stat-label">Active Members</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="glass-card">
+                        <div class="stat-num" data-count="18">0</div>
+                        <div class="stat-label">Expert Trainers</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="glass-card">
+                        <div class="stat-num" data-count="12">0</div>
+                        <div class="stat-label">Fitness Programs</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="glass-card">
+                        <div class="stat-num" data-count="98">0</div>
+                        <div class="stat-label">% Success Rate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about" class="section-pad">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=700&q=80"
+                        alt="About Muscle Forge" class="about-img" style="height:520px" />
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="hero-tag">About Us</div>
+                    <h2 class="section-title">WHERE IRON MEETS <span
+                            style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">AMBITION</span>
+                    </h2>
+                    <div class="grad-line"></div>
+                    <p class="section-sub mb-4">Founded in 2015 in the heart of India, Muscle Forge has redefined what a
+                        modern fitness centre can be. We blend science-backed programming with elite coaching to deliver
+                        real, lasting results for everyone — from first-timers to competitive athletes.</p>
+                    <div class="about-feature">
+                        <div class="about-icon"><i class="fas fa-dumbbell"></i></div>
+                        <div>
+                            <div class="fw-700" style="font-weight:700">State-of-the-Art Equipment</div>
+                            <div style="font-size:.88rem;color:var(--text-dim)">10,000 sq ft of premium fitness
+                                equipment, updated every year.</div>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-icon"><i class="fas fa-users"></i></div>
+                        <div>
+                            <div class="fw-700" style="font-weight:700">Community-Driven Culture</div>
+                            <div style="font-size:.88rem;color:var(--text-dim)">A judgment-free zone where every body,
+                                every goal, is celebrated.</div>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-icon"><i class="fas fa-chart-line"></i></div>
+                        <div>
+                            <div class="fw-700" style="font-weight:700">Personalised Tracking</div>
+                            <div style="font-size:.88rem;color:var(--text-dim)">Monthly body composition analysis and
+                                progress reports.</div>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <div class="about-icon"><i class="fas fa-apple-alt"></i></div>
+                        <div>
+                            <div class="fw-700" style="font-weight:700">In-House Nutrition Lab</div>
+                            <div style="font-size:.88rem;color:var(--text-dim)">Certified dietitians create plans
+                                tailored to your biology.</div>
+                        </div>
+                    </div>
+                    <a href="#programs" class="btn btn-primary-grad mt-3">Explore Programs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== PROGRAMS ===== -->
+    <section id="programs" class="section-pad"
+        style="background:linear-gradient(180deg,rgba(5,13,31,0) 0%,rgba(13,30,70,.3) 100%)">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Programs</div>
+                <h2 class="section-title">CHOOSE YOUR <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">BATTLEFIELD</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+                <p class="section-sub mx-auto">Twelve elite programs engineered by certified professionals to match
+                    every fitness level and goal.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80"
+                            class="prog-img mb-3" alt="Strength" />
+                        <span class="prog-tag">Strength</span>
+                        <div class="prog-title">Power Lifting</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">Max-effort compound lifts
+                            guided by IPF-certified coaches. Build raw, functional strength.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 60
+                                min</span><span><i class="fas fa-signal me-1"></i> Intermediate</span><span><i
+                                    class="fas fa-users me-1"></i> 15/batch</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="80">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80"
+                            class="prog-img mb-3" alt="HIIT" />
+                        <span class="prog-tag">Cardio</span>
+                        <div class="prog-title">HIIT Ignite</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">High-intensity intervals
+                            designed to torch 600+ calories per session and boost metabolism for 48 hours.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 45
+                                min</span><span><i class="fas fa-signal me-1"></i> All levels</span><span><i
+                                    class="fas fa-users me-1"></i> 20/batch</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?w=600&q=80"
+                            class="prog-img mb-3" alt="Yoga" />
+                        <span class="prog-tag">Wellness</span>
+                        <div class="prog-title">Power Yoga</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">Merge flexibility, breathwork,
+                            and mindfulness into a transformative 90-minute session.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 90
+                                min</span><span><i class="fas fa-signal me-1"></i> Beginner</span><span><i
+                                    class="fas fa-users me-1"></i> 12/batch</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=600&q=80"
+                            class="prog-img mb-3" alt="CrossFit" />
+                        <span class="prog-tag">CrossFit</span>
+                        <div class="prog-title">CrossFit WOD</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">Daily varied functional
+                            workouts combining gymnastics, Olympic lifting, and metabolic conditioning.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 60
+                                min</span><span><i class="fas fa-signal me-1"></i> Advanced</span><span><i
+                                    class="fas fa-users me-1"></i> 10/batch</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="80">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80"
+                            class="prog-img mb-3" alt="Zumba" />
+                        <span class="prog-tag">Dance Fitness</span>
+                        <div class="prog-title">Zumba Fiesta</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">Latin-inspired dance cardio
+                            that makes burning 500 calories feel like a celebration.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 50
+                                min</span><span><i class="fas fa-signal me-1"></i> All levels</span><span><i
+                                    class="fas fa-users me-1"></i> 25/batch</span></div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-4" data-aos="fade-up" data-aos-delay="160">
+                    <div class="glass-card prog-card h-100">
+                        <img src="https://images.unsplash.com/photo-1542766788-a2f588f447ee?w=600&q=80"
+                            class="prog-img mb-3" alt="Boxing" />
+                        <span class="prog-tag">Combat</span>
+                        <div class="prog-title">Boxing & MMA</div>
+                        <p style="font-size:.88rem;color:var(--text-dim);margin-top:8px">Learn stand-up striking,
+                            defence, and footwork from pro fighters while getting competition-level fit.</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3"
+                            style="font-size:.82rem;color:var(--text-dim)"><span><i class="fas fa-clock me-1"></i> 75
+                                min</span><span><i class="fas fa-signal me-1"></i> Intermediate</span><span><i
+                                    class="fas fa-users me-1"></i> 10/batch</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== BMI CALCULATOR ===== -->
+    <section id="bmi" class="section-pad">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="hero-tag">BMI Calculator</div>
+                    <h2 class="section-title">KNOW YOUR <span
+                            style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">NUMBERS</span>
+                    </h2>
+                    <div class="grad-line"></div>
+                    <p class="section-sub">Your BMI is a starting point, not a finish line. Use our calculator to get
+                        your number, then let our experts build a plan around your unique biology.</p>
+                    <div class="glass-card mt-4">
+                        <label class="mb-1 fw-600" style="font-size:.9rem;color:var(--text-dim)">Height: <span
+                                id="h-val">170</span> cm</label>
+                        <input type="range" id="bmi-height" min="120" max="220" value="170" oninput="calcBMI()"
+                            class="mb-3" />
+                        <label class="mb-1 fw-600" style="font-size:.9rem;color:var(--text-dim)">Weight: <span
+                                id="w-val">70</span> kg</label>
+                        <input type="range" id="bmi-weight" min="30" max="200" value="70" oninput="calcBMI()"
+                            class="mb-3" />
+                        <label class="mb-1 fw-600" style="font-size:.9rem;color:var(--text-dim)">Age: <span
+                                id="a-val">25</span> yrs</label>
+                        <input type="range" id="bmi-age" min="10" max="80" value="25" oninput="calcBMI()" />
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="glass-card text-center py-5">
+                        <div
+                            style="font-size:.85rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px">
+                            Your BMI Score</div>
+                        <div class="bmi-value" id="bmi-val">24.2</div>
+                        <div class="bmi-category" id="bmi-cat" style="color:#00e676">Normal Weight ✅</div>
+                        <div class="bmi-result-bar mt-4 mx-auto" style="max-width:420px">
+                            <div class="bmi-pointer" id="bmi-ptr" style="left:35%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 px-2"
+                            style="font-size:.7rem;color:var(--text-dim);max-width:420px;margin:auto">
+                            <span>Underweight<br>&lt;18.5</span>
+                            <span>Normal<br>18.5–24.9</span>
+                            <span>Overweight<br>25–29.9</span>
+                            <span>Obese<br>≥30</span>
+                        </div>
+                        <div class="row g-3 mt-4 text-start" id="bmi-tips">
+                            <div class="col-md-6">
+                                <div class="glass-card p-3"><i class="fas fa-utensils me-2"
+                                        style="color:var(--orange-lit)"></i><strong>Diet Tip:</strong> <span
+                                        id="bmi-diet-tip" style="font-size:.88rem;color:var(--text-dim)">Maintain a
+                                        balanced macro split.</span></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="glass-card p-3"><i class="fas fa-running me-2"
+                                        style="color:var(--blue)"></i><strong>Workout:</strong> <span
+                                        id="bmi-workout-tip" style="font-size:.88rem;color:var(--text-dim)">3–4 sessions
+                                        of mixed cardio and weights weekly.</span></div>
+                            </div>
+                        </div>
+                        <a href="#contact" class="btn btn-primary-grad mt-4">Get Free Consultation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== PRICING ===== -->
+    <section id="pricing" class="section-pad"
+        style="background:linear-gradient(180deg,rgba(10,61,145,.08) 0%,rgba(5,13,31,0) 100%)">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Pricing</div>
+                <h2 class="section-title">INVEST IN <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">YOURSELF</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+                <p class="section-sub mx-auto">Transparent, no-hidden-fee plans. Cancel anytime. Every plan includes app
+                    access, locker, and shower.</p>
+            </div>
+
+            <!-- Countdown + Limited Offer -->
+            <div class="glass-card mb-5 offer-box" data-aos="fade-up">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-4 text-center">
+                        <span class="badge-limited mb-2 d-inline-block">⚡ FLASH SALE LIVE</span>
+                        <h4 style="font-family:'Bebas Neue';font-size:1.8rem;margin:8px 0">OFFER ENDS IN</h4>
+                        <div class="d-flex justify-content-center gap-3 mt-2">
+                            <div class="countdown-item">
+                                <div class="countdown-num" id="cd-days">02</div>
+                                <div class="countdown-lab">Days</div>
+                            </div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:2rem;color:var(--orange-lit);line-height:1.2">
+                                :</div>
+                            <div class="countdown-item">
+                                <div class="countdown-num" id="cd-hrs">14</div>
+                                <div class="countdown-lab">Hours</div>
+                            </div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:2rem;color:var(--orange-lit);line-height:1.2">
+                                :</div>
+                            <div class="countdown-item">
+                                <div class="countdown-num" id="cd-min">36</div>
+                                <div class="countdown-lab">Mins</div>
+                            </div>
+                            <div
+                                style="font-family:'Bebas Neue';font-size:2rem;color:var(--orange-lit);line-height:1.2">
+                                :</div>
+                            <div class="countdown-item">
+                                <div class="countdown-num" id="cd-sec">00</div>
+                                <div class="countdown-lab">Secs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="mb-2 fw-700">🔥 Annual Plan — Limited Seats Available</div>
+                        <div class="progress-wrap">
+                            <div class="d-flex justify-content-between mb-1"><span
+                                    style="font-size:.82rem;color:var(--text-dim)">Seats Filled</span><span
+                                    class="seats-left">Only 11 seats left!</span></div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:78%"></div>
+                            </div>
+                        </div>
+                        <p style="font-size:.85rem;color:var(--text-dim);margin-top:10px">78 out of 89 discounted seats
+                            claimed. Don't miss India's biggest gym sale of the year!</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <a href="#contact" class="btn btn-primary-grad w-100">Claim Your Spot 🔥</a>
+                        <div style="font-size:.75rem;color:var(--text-dim);margin-top:8px">No credit card required</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="glass-card pricing-card h-100">
+                        <div style="font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:2px;color:var(--text-dim)">
+                            STARTER</div>
+                        <div class="price-num">₹999 <span style="font-size:1rem;font-family:'Exo 2'">/mo</span></div>
+                        <div class="price-old">₹1,999/mo · Save 50%</div>
+                        <hr style="border-color:rgba(255,255,255,.08);margin:18px 0">
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Gym Floor Access (6am–10pm)
+                        </div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> 1 Group Class / week</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Locker &amp; Shower</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> App Workout Tracker</div>
+                        <div class="pricing-feature" style="opacity:.4"><i class="fas fa-times-circle"></i> Personal
+                            Training</div>
+                        <div class="pricing-feature" style="opacity:.4"><i class="fas fa-times-circle"></i> Diet
+                            Consultation</div>
+                        <a href="#contact" class="btn btn-outline-glass w-100 mt-3">Get Started</a>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card pricing-card featured h-100">
+                        <div
+                            style="font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:2px;color:var(--orange-lit)">
+                            PRO FORGE</div>
+                        <div class="price-num">₹1,799 <span style="font-size:1rem;font-family:'Exo 2'">/mo</span></div>
+                        <div class="price-old">₹4,499/mo · Save 60%</div>
+                        <hr style="border-color:rgba(255,255,255,.08);margin:18px 0">
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> 24/7 Gym Access</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Unlimited Group Classes</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> 2 PT Sessions / month</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Monthly Diet Plan</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Body Composition Analysis</div>
+                        <div class="pricing-feature" style="opacity:.4"><i class="fas fa-times-circle"></i> Dedicated PT
+                            Coach</div>
+                        <a href="#contact" class="btn btn-primary-grad w-100 mt-3">Join Now 🔥</a>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card pricing-card h-100">
+                        <div
+                            style="font-family:'Bebas Neue';font-size:1.5rem;letter-spacing:2px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+                            ELITE WARRIOR</div>
+                        <div class="price-num">₹2,999 <span style="font-size:1rem;font-family:'Exo 2'">/mo</span></div>
+                        <div class="price-old">₹7,999/mo · Save 62%</div>
+                        <hr style="border-color:rgba(255,255,255,.08);margin:18px 0">
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> 24/7 Premium Access</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Unlimited Everything</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Dedicated Personal Trainer
+                        </div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Weekly Diet Consultation</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Spa &amp; Recovery Suite</div>
+                        <div class="pricing-feature"><i class="fas fa-check-circle"></i> Priority Class Booking</div>
+                        <a href="#contact" class="btn btn-outline-glass w-100 mt-3">Go Elite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== TRAINERS ===== -->
+    <section id="trainers" class="section-pad">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Our Team</div>
+                <h2 class="section-title">MEET YOUR <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">COACHES</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="0">
+                    <div class="trainer-card">
+                        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=400&q=80"
+                            class="trainer-img" alt="Trainer" />
+                        <div class="card-body">
+                            <div class="fw-700 fs-5" style="font-family:'Rajdhani'">Arjun Sharma</div>
+                            <div style="font-size:.82rem;color:var(--text-dim)">Strength & Conditioning</div>
+                            <div class="my-2"><span class="trainer-spec">Powerlifting</span><span
+                                    class="trainer-spec">Hypertrophy</span></div>
+                            <div class="trainer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i
+                                        class="fab fa-twitter"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="80">
+                    <div class="trainer-card">
+                        <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80"
+                            class="trainer-img" alt="Trainer" />
+                        <div class="card-body">
+                            <div class="fw-700 fs-5" style="font-family:'Rajdhani'">Priya Menon</div>
+                            <div style="font-size:.82rem;color:var(--text-dim)">Yoga & Wellness Coach</div>
+                            <div class="my-2"><span class="trainer-spec">Power Yoga</span><span
+                                    class="trainer-spec">Nutrition</span></div>
+                            <div class="trainer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i
+                                        class="fab fa-twitter"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="160">
+                    <div class="trainer-card">
+                        <img src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?w=400&q=80"
+                            class="trainer-img" alt="Trainer" />
+                        <div class="card-body">
+                            <div class="fw-700 fs-5" style="font-family:'Rajdhani'">Vikram Nair</div>
+                            <div style="font-size:.82rem;color:var(--text-dim)">HIIT & CrossFit</div>
+                            <div class="my-2"><span class="trainer-spec">HIIT</span><span class="trainer-spec">CrossFit
+                                    L2</span></div>
+                            <div class="trainer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i
+                                        class="fab fa-twitter"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3" data-aos="fade-up" data-aos-delay="240">
+                    <div class="trainer-card">
+                        <img src="https://images.unsplash.com/photo-1520877880798-5ee004e3f11e?w=400&q=80"
+                            class="trainer-img" alt="Trainer" />
+                        <div class="card-body">
+                            <div class="fw-700 fs-5" style="font-family:'Rajdhani'">Divya Rao</div>
+                            <div style="font-size:.82rem;color:var(--text-dim)">Zumba & Dance Fitness</div>
+                            <div class="my-2"><span class="trainer-spec">Zumba</span><span class="trainer-spec">Cardio
+                                    Dance</span></div>
+                            <div class="trainer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i
+                                        class="fab fa-twitter"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== DIET CHARTS ===== -->
+    <section id="diet" class="section-pad"
+        style="background:linear-gradient(135deg,rgba(13,110,253,.06) 0%,rgba(255,106,0,.06) 100%)">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Nutrition</div>
+                <h2 class="section-title">SAMPLE <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">DIET
+                        CHARTS</span></h2>
+                <div class="grad-line mx-auto"></div>
+                <p class="section-sub mx-auto">Curated by our certified nutritionists for three common fitness goals.
+                </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="glass-card h-100">
+                        <div class="prog-tag mb-3">Fat Loss</div>
+                        <div class="diet-day">Monday — Weight Loss Plan</div>
+                        <div class="meal-row"><span class="meal-time">6:30 AM</span><span class="meal-name">Warm lemon
+                                water + almonds (8)</span><span class="meal-cal">90 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">8:00 AM</span><span class="meal-name">Oats +
+                                banana + skimmed milk</span><span class="meal-cal">310 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">11:00 AM</span><span class="meal-name">Apple +
+                                green tea</span><span class="meal-cal">85 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">1:30 PM</span><span class="meal-name">Brown rice +
+                                dal + grilled paneer</span><span class="meal-cal">480 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">4:30 PM</span><span class="meal-name">Sprouts
+                                chaat + coconut water</span><span class="meal-cal">160 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">7:30 PM</span><span class="meal-name">Multigrain
+                                roti + vegetable soup</span><span class="meal-cal">350 kcal</span></div>
+                        <div class="mt-3 d-flex gap-3" style="font-size:.8rem;font-weight:700">
+                            <span style="color:var(--orange-lit)">Total: 1,475 kcal</span>
+                            <span style="color:#7eb5ff">Protein: 98g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card h-100">
+                        <div class="prog-tag mb-3" style="background:linear-gradient(135deg,#1565c0,#0d6efd)">Muscle
+                            Gain</div>
+                        <div class="diet-day">Monday — Bulk Plan</div>
+                        <div class="meal-row"><span class="meal-time">6:30 AM</span><span class="meal-name">Whey protein
+                                shake + banana</span><span class="meal-cal">320 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">8:30 AM</span><span class="meal-name">Eggs (4) +
+                                whole-wheat toast + milk</span><span class="meal-cal">580 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">11:00 AM</span><span class="meal-name">Chicken
+                                sandwich + peanut butter</span><span class="meal-cal">450 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">1:30 PM</span><span class="meal-name">White rice +
+                                grilled chicken + salad</span><span class="meal-cal">620 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">4:30 PM</span><span class="meal-time"></span><span
+                                class="meal-name">Pre-workout snack + creatine</span><span class="meal-cal">200
+                                kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">8:00 PM</span><span class="meal-name">Paneer /
+                                fish + roti + curd</span><span class="meal-cal">550 kcal</span></div>
+                        <div class="mt-3 d-flex gap-3" style="font-size:.8rem;font-weight:700">
+                            <span style="color:var(--orange-lit)">Total: 2,720 kcal</span>
+                            <span style="color:#7eb5ff">Protein: 185g</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card h-100">
+                        <div class="prog-tag mb-3" style="background:linear-gradient(135deg,#2e7d32,#43a047)">
+                            Maintenance</div>
+                        <div class="diet-day">Monday — Balance Plan</div>
+                        <div class="meal-row"><span class="meal-time">7:00 AM</span><span class="meal-name">Fruit bowl +
+                                Greek yogurt</span><span class="meal-cal">220 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">9:00 AM</span><span class="meal-name">Poha + green
+                                tea</span><span class="meal-cal">280 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">12:00 PM</span><span class="meal-name">Rajma
+                                chawal + salad</span><span class="meal-cal">520 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">4:00 PM</span><span class="meal-name">Roasted
+                                makhana + herbal tea</span><span class="meal-cal">120 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">7:00 PM</span><span class="meal-name">Dal makhani
+                                + roti + raita</span><span class="meal-cal">490 kcal</span></div>
+                        <div class="meal-row"><span class="meal-time">9:00 PM</span><span class="meal-name">Warm
+                                turmeric milk</span><span class="meal-cal">120 kcal</span></div>
+                        <div class="mt-3 d-flex gap-3" style="font-size:.8rem;font-weight:700">
+                            <span style="color:var(--orange-lit)">Total: 1,750 kcal</span>
+                            <span style="color:#7eb5ff">Protein: 110g</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== GALLERY ===== -->
+    <section id="gallery" class="section-pad">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Gallery</div>
+                <h2 class="section-title">INSIDE <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">MUSCLE
+                        FORGE</span></h2>
+                <div class="grad-line mx-auto"></div>
+            </div>
+            <div class="gallery-grid" data-aos="fade-up">
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Weight Training Floor</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">HIIT Zone</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Cardio Area</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1576678927484-cc907957088c?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Group Yoga</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1549476464-37392f717541?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Boxing Ring</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Women's Zone</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1591291621164-2c6367723315?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Personal Training</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">Recovery & Spa</span></div>
+                </div>
+                <div class="gal-item"><img src="https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600&q=80"
+                        alt="" />
+                    <div class="gal-overlay"><span style="font-weight:700">CrossFit Box</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section id="testimonials" class="section-pad"
+        style="background:linear-gradient(135deg,rgba(10,61,145,.07) 0%,rgba(255,106,0,.05) 100%)">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Testimonials</div>
+                <h2 class="section-title">REAL <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">TRANSFORMATIONS</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+                    <div class="glass-card testi-card h-100">
+                        <div class="testi-quote">"</div>
+                        <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="testi-text">In 6 months at Muscle Forge I lost 24 kg and completely changed my
+                            relationship with food and exercise. The trainers treat you like family. Best investment I
+                            ever made!</p>
+                        <div class="d-flex align-items-center gap-3 mt-4">
+                            <img src="https://images.unsplash.com/photo-1607990283143-e81e7a2c9349?w=100&q=80"
+                                class="testi-avatar" alt="" />
+                            <div>
+                                <div class="testi-name">Rahul Gupta</div>
+                                <div class="testi-role">Software Engineer, Bengaluru</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="glass-card testi-card h-100">
+                        <div class="testi-quote">"</div>
+                        <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p class="testi-text">As a woman, I was nervous about joining a gym. Muscle Forge has a separate
+                            women's zone, incredible female coaches, and zero judgment. I've never felt stronger or more
+                            confident!</p>
+                        <div class="d-flex align-items-center gap-3 mt-4">
+                            <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&q=80"
+                                class="testi-avatar" alt="" />
+                            <div>
+                                <div class="testi-name">Sneha Patel</div>
+                                <div class="testi-role">Teacher, Mumbai</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="glass-card testi-card h-100">
+                        <div class="testi-quote">"</div>
+                        <div class="testi-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testi-text">I came in as a complete beginner at 19 years old. The coaches built me
+                            from zero — I'm now competing in state-level powerlifting. The community here is absolutely
+                            unmatched.</p>
+                        <div class="d-flex align-items-center gap-3 mt-4">
+                            <img src="https://images.unsplash.com/photo-1600486913747-55e5470d6f40?w=100&q=80"
+                                class="testi-avatar" alt="" />
+                            <div>
+                                <div class="testi-name">Karan Mehta</div>
+                                <div class="testi-role">Student, Delhi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== SCHEDULE ===== -->
+    <section id="schedule" class="section-pad">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Schedule</div>
+                <h2 class="section-title">CLASS <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">TIMETABLE</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+            </div>
+            <ul class="nav nav-pills justify-content-center mb-4 flex-wrap" id="schedTabs" data-aos="fade-up">
+                <li class="nav-item"><button class="nav-link active" data-day="mon">Mon</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="tue">Tue</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="wed">Wed</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="thu">Thu</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="fri">Fri</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="sat">Sat</button></li>
+                <li class="nav-item"><button class="nav-link" data-day="sun">Sun</button></li>
+            </ul>
+            <div class="glass-card" data-aos="fade-up">
+                <div class="d-none d-sm-grid mb-2"
+                    style="grid-template-columns:100px 1fr 120px 120px;gap:16px;padding:0 20px;font-size:.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;font-weight:700">
+                    <span>Time</span><span>Class</span><span>Trainer</span><span>Slots</span>
+                </div>
+                <div id="sched-body"></div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== FAQ ===== -->
+    <section id="faq" class="section-pad"
+        style="background:linear-gradient(180deg,rgba(10,61,145,.07) 0%,rgba(5,13,31,0) 100%)">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4" data-aos="fade-right">
+                    <div class="hero-tag">FAQ</div>
+                    <h2 class="section-title">GOT <span
+                            style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">QUESTIONS?</span>
+                    </h2>
+                    <div class="grad-line"></div>
+                    <p class="section-sub">Can't find your answer? Chat with us or drop by the gym anytime — we're open
+                        24/7.</p>
+                    <a href="#contact" class="btn btn-primary-grad mt-3">Contact Us</a>
+                </div>
+                <div class="col-lg-8" data-aos="fade-left">
+                    <div id="faq-list"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr class="divider-grad" />
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact" class="section-pad">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <div class="hero-tag">Contact Us</div>
+                <h2 class="section-title">LET'S <span
+                        style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CONNECT</span>
+                </h2>
+                <div class="grad-line mx-auto"></div>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <div class="fw-700 mb-1">Visit Us</div>
+                            <div style="font-size:.9rem;color:var(--text-dim)">12 Fitness Avenue, Koramangala, Bengaluru
+                                — 560034</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <div class="fw-700 mb-1">Call Us</div>
+                            <div style="font-size:.9rem;color:var(--text-dim)">+91 98765 43210 (9am–9pm)</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <div class="fw-700 mb-1">Email Us</div>
+                            <div style="font-size:.9rem;color:var(--text-dim)">hello@muscleforge.in</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="ci-icon"><i class="fas fa-clock"></i></div>
+                        <div>
+                            <div class="fw-700 mb-1">Hours</div>
+                            <div style="font-size:.9rem;color:var(--text-dim)">Mon–Fri: 5am–11pm &nbsp;|&nbsp; Sat–Sun:
+                                6am–10pm</div>
+                        </div>
+                    </div>
+                    <div class="glass-card mt-4 offer-box">
+                        <div class="fw-700 mb-2">🎁 Free Trial Offer</div>
+                        <p style="font-size:.88rem;color:var(--text-dim)">Fill in the form to claim your <strong
+                                style="color:var(--orange-lit)">3-day FREE trial pass</strong> — no credit card, no
+                            commitment. Valid for first 50 sign-ups only!</p>
+                        <div class="progress-wrap mt-2">
+                            <div class="d-flex justify-content-between mb-1"><span
+                                    style="font-size:.78rem;color:var(--text-dim)">Trial Passes Claimed</span><span
+                                    class="seats-left">Only 14 left!</span></div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width:72%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="glass-card">
+                        <form id="contact-form">
+                            <div class="row g-3">
+                                <div class="col-sm-6"><input type="text" class="form-control" placeholder="Your Name"
+                                        required /></div>
+                                <div class="col-sm-6"><input type="email" class="form-control"
+                                        placeholder="Email Address" required /></div>
+                                <div class="col-sm-6"><input type="tel" class="form-control"
+                                        placeholder="Phone Number" /></div>
+                                <div class="col-sm-6">
+                                    <select class="form-select">
+                                        <option value="">I'm interested in...</option>
+                                        <option>Starter Plan</option>
+                                        <option>Pro Forge Plan</option>
+                                        <option>Elite Warrior Plan</option>
+                                        <option>Free Trial</option>
+                                        <option>Personal Training</option>
+                                    </select>
+                                </div>
+                                <div class="col-12"><select class="form-select">
+                                        <option>Select Your Goal</option>
+                                        <option>Fat Loss</option>
+                                        <option>Muscle Gain</option>
+                                        <option>General Fitness</option>
+                                        <option>Athletic Performance</option>
+                                        <option>Stress Relief / Yoga</option>
+                                    </select></div>
+                                <div class="col-12"><textarea class="form-control" rows="4"
+                                        placeholder="Tell us about your fitness goals..."></textarea></div>
+                                <div class="col-12"><button type="submit" class="btn btn-primary-grad w-100">Send
+                                        Message & Claim Free Trial 🚀</button></div>
+                            </div>
+                        </form>
+                        <div id="form-success" style="display:none" class="text-center py-4">
+                            <div style="font-size:3rem">🎉</div>
+                            <h5 class="mt-2">You're In! We'll call you within 2 hours.</h5>
+                            <p style="color:var(--text-dim);font-size:.9rem">Your free 3-day trial pass has been
+                                reserved. Check your email for details.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand">⚡ MUSCLE FORGE</div>
+                    <p style="font-size:.9rem;color:var(--text-dim);margin-top:14px;max-width:320px;line-height:1.8">
+                        India's most-loved fitness destination. Forging stronger bodies and unbreakable minds since
+                        2015.</p>
+                    <div class="footer-social mt-3">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <div
+                        style="font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:.85rem;margin-bottom:16px">
+                        Quick Links</div>
+                    <a class="footer-link" href="#about">About Us</a>
+                    <a class="footer-link" href="#programs">Programs</a>
+                    <a class="footer-link" href="#pricing">Pricing</a>
+                    <a class="footer-link" href="#trainers">Trainers</a>
+                    <a class="footer-link" href="#gallery">Gallery</a>
+                </div>
+                <div class="col-6 col-lg-2">
+                    <div
+                        style="font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:.85rem;margin-bottom:16px">
+                        Programs</div>
+                    <a class="footer-link" href="#">Power Lifting</a>
+                    <a class="footer-link" href="#">HIIT Ignite</a>
+                    <a class="footer-link" href="#">Power Yoga</a>
+                    <a class="footer-link" href="#">CrossFit WOD</a>
+                    <a class="footer-link" href="#">Zumba Fiesta</a>
+                </div>
+                <div class="col-lg-4">
+                    <div
+                        style="font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:.85rem;margin-bottom:16px">
+                        Stay Updated</div>
+                    <p style="font-size:.88rem;color:var(--text-dim);margin-bottom:14px">Subscribe for exclusive offers,
+                        fitness tips, and early access to new programs.</p>
+                    <div class="d-flex gap-2">
+                        <input type="email" class="form-control" placeholder="Your email" style="border-radius:10px" />
+                        <button class="btn btn-primary-grad"
+                            style="white-space:nowrap;padding:12px 20px">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom d-flex flex-wrap justify-content-between align-items-center">
+                <span>© 2025 Muscle Forge. All rights reserved.</span>
+                <div class="d-flex gap-3 mt-2 mt-md-0">
+                    <a href="#" class="footer-link mb-0">Privacy Policy</a>
+                    <a href="#" class="footer-link mb-0">Terms of Service</a>
+                    <a href="#" class="footer-link mb-0">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating CTA -->
+    <button class="floating-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">🔥
+        Join Now — 60% OFF</button>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // ===== AOS =====
+        AOS.init({ once: true, duration: 700, easing: 'ease-out-cubic' });
+
+        // ===== PARTICLE CANVAS =====
+        (function () {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+            function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * W;
+                    this.y = H + Math.random() * H;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speed = Math.random() * 0.6 + 0.3;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                    this.color = Math.random() > 0.5 ? '13,110,253' : '255,106,0';
+                }
+                update() { this.y -= this.speed; if (this.y < -10) this.y = H + 10; }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+            for (let i = 0; i < 120; i++) particles.push(new Particle());
+            function animate() {
+                ctx.clearRect(0, 0, W, H);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ===== COUNTER ANIMATION =====
+        function animateCount(el, target) {
+            let current = 0;
+            const step = target / 60;
+            const interval = setInterval(() => {
+                current = Math.min(current + step, target);
+                el.textContent = Math.floor(current).toLocaleString('en-IN');
+                if (current >= target) clearInterval(interval);
+            }, 25);
+        }
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    const target = parseInt(e.target.dataset.count);
+                    animateCount(e.target, target);
+                    observer.unobserve(e.target);
+                }
+            });
+        });
+        document.querySelectorAll('[data-count]').forEach(el => observer.observe(el));
+
+        // ===== BMI CALCULATOR =====
+        function calcBMI() {
+            const h = document.getElementById('bmi-height').value;
+            const w = document.getElementById('bmi-weight').value;
+            document.getElementById('h-val').textContent = h;
+            document.getElementById('w-val').textContent = w;
+            document.getElementById('a-val').textContent = document.getElementById('bmi-age').value;
+            const bmi = (w / ((h / 100) ** 2)).toFixed(1);
+            document.getElementById('bmi-val').textContent = bmi;
+            let cat, color, pct, diet, workout;
+            if (bmi < 18.5) { cat = 'Underweight ⚠️'; color = '#42a5f5'; pct = 8; diet = 'Increase caloric intake with nutrient-dense whole foods.'; workout = 'Focus on strength training 4x/week to build muscle mass.'; }
+            else if (bmi < 25) { cat = 'Normal Weight ✅'; color = '#66bb6a'; pct = 35; diet = 'Maintain a balanced 40/30/30 macro split for optimal health.'; workout = '3–4 sessions of mixed cardio and weights weekly.'; }
+            else if (bmi < 30) { cat = 'Overweight 🔶'; color = '#ffa726'; pct = 62; diet = 'Moderate caloric deficit with high protein intake (1.6g/kg).'; workout = 'Daily 30-min cardio + 3 strength sessions per week.'; }
+            else { cat = 'Obese 🔴'; color = '#ef5350'; pct = 88; diet = 'Consult our nutritionist for a supervised calorie-reduction plan.'; workout = 'Start with low-impact cardio and supervised weight training.'; }
+            document.getElementById('bmi-cat').textContent = cat;
+            document.getElementById('bmi-cat').style.color = color;
+            document.getElementById('bmi-ptr').style.left = pct + '%';
+            document.getElementById('bmi-diet-tip').textContent = diet;
+            document.getElementById('bmi-workout-tip').textContent = workout;
+        }
+        calcBMI();
+
+        // ===== COUNTDOWN =====
+        (function () {
+            const end = new Date();
+            end.setDate(end.getDate() + 2);
+            end.setHours(end.getHours() + 14);
+            end.setMinutes(end.getMinutes() + 36);
+            function update() {
+                const diff = end - new Date();
+                if (diff <= 0) return;
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                const pad = n => String(n).padStart(2, '0');
+                document.getElementById('cd-days').textContent = pad(d);
+                document.getElementById('cd-hrs').textContent = pad(h);
+                document.getElementById('cd-min').textContent = pad(m);
+                document.getElementById('cd-sec').textContent = pad(s);
+                document.getElementById('sr-timer').textContent = `${pad(d)}D : ${pad(h)}H : ${pad(m)}M`;
+            }
+            update();
+            setInterval(update, 1000);
+        })();
+
+        // ===== SCHEDULE DATA =====
+        const scheduleData = {
+            mon: [
+                { time: '6:00 AM', name: 'Power Lifting', trainer: 'Arjun Sharma', slots: 3, full: false },
+                { time: '8:00 AM', name: 'HIIT Ignite', trainer: 'Vikram Nair', slots: 0, full: true },
+                { time: '10:00 AM', name: 'Power Yoga', trainer: 'Priya Menon', slots: 5, full: false },
+                { time: '5:30 PM', name: 'Zumba Fiesta', trainer: 'Divya Rao', slots: 8, full: false },
+                { time: '7:00 PM', name: 'CrossFit WOD', trainer: 'Vikram Nair', slots: 2, full: false },
+            ],
+            tue: [
+                { time: '7:00 AM', name: 'Yoga Flow', trainer: 'Priya Menon', slots: 4, full: false },
+                { time: '9:00 AM', name: 'Boxing Fundamentals', trainer: 'Arjun Sharma', slots: 6, full: false },
+                { time: '12:00 PM', name: 'HIIT Ignite', trainer: 'Vikram Nair', slots: 0, full: true },
+                { time: '6:00 PM', name: 'Body Pump', trainer: 'Divya Rao', slots: 10, full: false },
+            ],
+            wed: [
+                { time: '6:00 AM', name: 'CrossFit WOD', trainer: 'Vikram Nair', slots: 1, full: false },
+                { time: '9:30 AM', name: 'Power Yoga', trainer: 'Priya Menon', slots: 7, full: false },
+                { time: '5:00 PM', name: 'Power Lifting', trainer: 'Arjun Sharma', slots: 4, full: false },
+                { time: '7:30 PM', name: 'Zumba Fiesta', trainer: 'Divya Rao', slots: 0, full: true },
+            ],
+            thu: [
+                { time: '7:00 AM', name: 'HIIT Ignite', trainer: 'Vikram Nair', slots: 3, full: false },
+                { time: '10:00 AM', name: 'Boxing & MMA', trainer: 'Arjun Sharma', slots: 5, full: false },
+                { time: '5:30 PM', name: 'Body Conditioning', trainer: 'Divya Rao', slots: 9, full: false },
+                { time: '7:00 PM', name: 'Meditation & Yoga', trainer: 'Priya Menon', slots: 6, full: false },
+            ],
+            fri: [
+                { time: '6:00 AM', name: 'Power Lifting', trainer: 'Arjun Sharma', slots: 2, full: false },
+                { time: '9:00 AM', name: 'Zumba Fiesta', trainer: 'Divya Rao', slots: 0, full: true },
+                { time: '11:00 AM', name: 'Yoga Flow', trainer: 'Priya Menon', slots: 4, full: false },
+                { time: '6:00 PM', name: 'CrossFit WOD', trainer: 'Vikram Nair', slots: 3, full: false },
+            ],
+            sat: [
+                { time: '7:00 AM', name: 'Weekend Warriors HIIT', trainer: 'Vikram Nair', slots: 0, full: true },
+                { time: '9:30 AM', name: 'Power Yoga', trainer: 'Priya Menon', slots: 6, full: false },
+                { time: '11:00 AM', name: 'Boxing & MMA', trainer: 'Arjun Sharma', slots: 4, full: false },
+                { time: '5:00 PM', name: 'Zumba Fiesta', trainer: 'Divya Rao', slots: 12, full: false },
+            ],
+            sun: [
+                { time: '8:00 AM', name: 'Recovery Yoga', trainer: 'Priya Menon', slots: 8, full: false },
+                { time: '10:00 AM', name: 'Open Gym Session', trainer: 'All Trainers', slots: 20, full: false },
+                { time: '5:00 PM', name: 'Sunset HIIT', trainer: 'Vikram Nair', slots: 5, full: false },
+            ]
+        };
+
+        function renderSched(day) {
+            const data = scheduleData[day];
+            const body = document.getElementById('sched-body');
+            body.innerHTML = data.map(r => `
+    <div class="sched-row">
+      <div class="sched-time">${r.time}</div>
+      <div><div class="sched-name">${r.name}</div></div>
+      <div class="sched-trainer">${r.trainer}</div>
+      <div class="sched-slots ${r.full ? 'slot-full' : 'slot-open'}">${r.full ? '<i class="fas fa-times-circle me-1"></i>Fully Booked' : '<i class="fas fa-check-circle me-1"></i>' + r.slots + ' spots left'}</div>
+    </div>
+  `).join('');
+        }
+        renderSched('mon');
+        document.querySelectorAll('#schedTabs .nav-link').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('#schedTabs .nav-link').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderSched(this.dataset.day);
+            });
+        });
+
+        // ===== FAQ =====
+        const faqs = [
+            { q: 'What are the gym timings?', a: 'Muscle Forge is open Monday–Friday 5am–11pm, Saturday 6am–10pm, and Sunday 6am–9pm. Premium Elite members enjoy 24/7 access via their smart card.' },
+            { q: 'Do you offer a free trial?', a: 'Absolutely! We offer a 3-day free trial for all new members. Just fill in the contact form above and we\'ll activate your pass within 2 hours.' },
+            { q: 'Is there a women-only section?', a: 'Yes! We have a fully equipped 2,000 sq ft women-only zone with dedicated female trainers, separate changing rooms, and its own HVAC system.' },
+            { q: 'Can I freeze my membership?', a: 'Pro and Elite members can freeze their membership for up to 2 months per year — perfect for travel or medical recovery.' },
+            { q: 'What equipment do you have?', a: 'We stock over 200 pieces of equipment including Olympic platforms, cable machines, functional rigs, Assault bikes, ERGs, and a dedicated boxing ring.' },
+            { q: 'Are personal training sessions included in plans?', a: 'Starter members can add-on PT at ₹600/session. Pro members get 2 PT sessions/month. Elite members get unlimited PT with a dedicated coach.' },
+            { q: 'Do you have parking?', a: 'Yes, we have 100+ car parking spaces available free of charge for all members, as well as secure bike parking.' },
+        ];
+        const faqList = document.getElementById('faq-list');
+        faqs.forEach((f, i) => {
+            faqList.innerHTML += `
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span>${f.q}</span>
+        <i class="fas fa-plus faq-icon"></i>
+      </div>
+      <div class="faq-a">${f.a}</div>
+    </div>
+  `;
+        });
+        function toggleFaq(el) {
+            const ans = el.nextElementSibling;
+            const isOpen = ans.classList.contains('open');
+            document.querySelectorAll('.faq-a.open').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-q.open').forEach(q => q.classList.remove('open'));
+            if (!isOpen) { ans.classList.add('open'); el.classList.add('open'); }
+        }
+
+        // ===== CONTACT FORM =====
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('form-success').style.display = 'block';
+        });
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            nav.style.boxShadow = window.scrollY > 50 ? '0 4px 30px rgba(0,0,0,.5)' : 'none';
+        });
+    </script>
+</body>
+
+</html>
